@@ -34,3 +34,7 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Playwright spike — persistent browser profile (contains logged-in session)
+/.playwright-profile/
+/scripts/.spike-shots/

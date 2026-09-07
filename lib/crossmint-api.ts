@@ -18,7 +18,8 @@ import type {
   PaymentMethodResponse,
 } from "@/lib/crossmint-types";
 
-const BASE_URL = "https://staging.crossmint.com/api/unstable";
+const BASE_URL =
+  process.env.CROSSMINT_API_BASE_URL ?? "https://www.crossmint.com/api/unstable";
 const API_KEY = process.env.NEXT_PUBLIC_CROSSMINT_CLIENT_API_KEY ?? "";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────

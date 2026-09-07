@@ -75,3 +75,38 @@ bun dev
 
 ## Using in production
 1. Create a [production API key](https://docs.crossmint.com/introduction/platform/api-keys/client-side).
+
+## DoorDash browser-agent spike
+
+`scripts/doordash-spike.ts` is a standalone Playwright proof that an automated
+agent driving a **real, logged-in browser** can manipulate a DoorDash cart. It is
+not the production agent — it validates the riskiest assumption before the full
+build. There is no official consumer-ordering DoorDash API, so this drives the
+real site via a persistent browser profile (no password is ever stored; you log
+in manually once and the session persists in `.playwright-profile/`, which is
+gitignored).
+
+### Setup
+
+```bash
+pnpm install                                  # installs playwright + tsx (already in devDeps)
+pnpm exec playwright install chromium         # one-time: download the browser binary
+```
+
+### Run
+
+```bash
+pnpm spike:doordash
+# or with a specific store:
+DOORDASH_STORE_URL=https://www.doordash.com/store/… pnpm spike:doordash
+```
+
+On the first run a headed Chromium opens — **log in to DoorDash manually once**.
+The script then navigates to the store, adds the first menu item to the cart, and
+advances through checkout to the **payment step** (it stops there; no card is
+filled and no order is submitted). Screenshots are written to
+`scripts/.spike-shots/` at each stage. On subsequent runs the saved session means
+you start already logged in.
+
+> DoorDash's DOM changes frequently, so the role/text selectors in the script may
+> need tuning on the first run — the console logs and screenshots pinpoint where.
